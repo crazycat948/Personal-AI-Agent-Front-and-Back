@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import os
 
 app = FastAPI()
 
@@ -13,33 +14,64 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# -------- 请求格式 --------
 class ChatRequest(BaseModel):
     query: str
 
-# ---- 模拟 AI 回复函数 ----
-def generate_fake_response(query: str) -> str:
+
+# -------- 读取知识库 --------
+def load_data():
+
+    data_text = ""
+
+    folder = "backend/data"
+
+    if not os.path.exists(folder):
+        return "Knowledge folder not found."
+
+    for file in os.listdir(folder):
+
+        if file.endswith(".md"):
+
+            path = os.path.join(folder, file)
+
+            with open(path, "r", encoding="utf-8") as f:
+                data_text += f"\n\n--- {file} ---\n"
+                data_text += f.read()
+
+    return data_text
+
+
+# -------- 模拟 AI 回复 --------
+def generate_response(query: str):
+
+    knowledge = load_data()
+
     q = query.lower()
 
-    if "project" in q:
-        return "Yifan has built several projects including SkillVault, a full-stack personal skill tracking platform."
+    # 简单关键词匹配
+    if "philosophy" in q:
+        return knowledge[:800]
 
-    elif "music" in q:
-        return "Yifan enjoys rap, indie music, and exploring new underground artists."
+    if "hobby" in q or "music" in q or "anime" in q:
+        return knowledge[:800]
 
-    elif "game" in q:
-        return "Yifan likes strategy games, RPGs, and occasionally competitive online games."
+    if "love" in q:
+        return knowledge[:800]
 
-    elif "literature" in q or "book" in q:
-        return "Yifan is interested in literature, especially works that explore philosophy and human nature."
+    if "who are you" in q:
+        return "I'm Yifan's personal AI assistant. I can talk about his projects, hobbies, philosophy, and ideas."
 
-    elif "who are you" in q:
-        return "I'm Yifan's personal AI assistant, designed to talk about his projects, interests, and ideas."
+    # 默认回答
+    return (
+        "I know many things about Yifan from his knowledge base. "
+        "Ask me about his hobbies, philosophy, projects, or thoughts."
+    )
 
-    else:
-        return "That's an interesting question! Tell me more about what you'd like to know about Yifan."
-
-# ---- API 路由 ----
+# -------- API 路由 --------
 @app.post("/chat")
 def chat(req: ChatRequest):
-    reply = generate_fake_response(req.query)
+
+    reply = generate_response(req.query)
+
     return {"reply": reply}
