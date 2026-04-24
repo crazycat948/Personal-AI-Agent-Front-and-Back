@@ -145,7 +145,7 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ query: text })
+                    body: JSON.stringify({ message: text })
                 });
 
                 const data = await response.json();

@@ -1,11 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+from dotenv import load_dotenv
+from openai import OpenAI
+
 import os
+
+# Load environment variables
+load_dotenv()
+
+# OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 app = FastAPI()
 
-# 允许前端访问
+# Allow frontend requests
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,26 +25,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# -------- 请求格式 --------
+# Request model
 class ChatRequest(BaseModel):
-    query: str
+    message: str
 
 
-# -------- 读取知识库 --------
+# Load data from md files
 def load_data():
 
     data_text = ""
 
-    folder = "backend/data"
+    BASE_DIR = os.path.dirname(__file__)
+    DATA_FOLDER = os.path.join(BASE_DIR, "data")
 
-    if not os.path.exists(folder):
-        return "Knowledge folder not found."
-
-    for file in os.listdir(folder):
+    for file in os.listdir(DATA_FOLDER):
 
         if file.endswith(".md"):
 
-            path = os.path.join(folder, file)
+            path = os.path.join(DATA_FOLDER, file)
 
             with open(path, "r", encoding="utf-8") as f:
                 data_text += f"\n\n--- {file} ---\n"
@@ -42,36 +51,41 @@ def load_data():
     return data_text
 
 
-# -------- 模拟 AI 回复 --------
+# Generate AI response
 def generate_response(query: str):
 
-    knowledge = load_data()
+    data = load_data()
 
-    q = query.lower()
+    prompt = f"""
+You are Yifan's personal AI assistant.
 
-    # 简单关键词匹配
-    if "philosophy" in q:
-        return knowledge[:800]
+Use the following information about Yifan to answer the question.
 
-    if "hobby" in q or "music" in q or "anime" in q:
-        return knowledge[:800]
+Information about Yifan:
 
-    if "love" in q:
-        return knowledge[:800]
+{data}
 
-    if "who are you" in q:
-        return "I'm Yifan's personal AI assistant. I can talk about his projects, hobbies, philosophy, and ideas."
+User question:
+{query}
 
-    # 默认回答
-    return (
-        "I know many things about Yifan from his knowledge base. "
-        "Ask me about his hobbies, philosophy, projects, or thoughts."
+Answer naturally and concisely.
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are Yifan's personal AI assistant."},
+            {"role": "user", "content": prompt}
+        ]
     )
 
-# -------- API 路由 --------
-@app.post("/chat")
-def chat(req: ChatRequest):
+    return response.choices[0].message.content
 
-    reply = generate_response(req.query)
+
+# Chat endpoint
+@app.post("/chat")
+def chat(request: ChatRequest):
+
+    reply = generate_response(request.message)
 
     return {"reply": reply}
