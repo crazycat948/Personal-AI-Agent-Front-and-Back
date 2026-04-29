@@ -586,7 +586,7 @@ color: white;
         const botMessage = botRow.querySelector(".bot-msg");
 
         try {
-            const res = await fetch("http://127.0.0.1:8000/chat", {
+            const res = await fetch("https://ai-agent-backend-5r1c.onrender.com/chat", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
