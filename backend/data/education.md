@@ -12,20 +12,16 @@ He attended high school in Texas and later began his university education in the
 
 After initially attending the University of Nebraska–Lincoln, he transferred to Houston Community College due to personal and academic adjustment challenges. He later transferred to the University of Texas at Dallas (UTD) in January 2023 to complete his undergraduate studies in Computer Science.
 
-He has been admitted to graduate programs in Computer Science at both the University of Texas at Dallas (UTD) and the University of California, Davis (UC Davis).
+He earned his bachelor’s degree in Computer Science from the University of Texas at Dallas (UTD) and is currently a graduate student in Computer Science at the University of Illinois Urbana-Champaign (UIUC).
 
 ---
 
-# Graduate School (Planned)
+# Graduate School
 
-## University of California, Davis
-Program: Master of Science in Computer Science  
-Status: Admitted  
+## University of Illinois Urbana-Champaign
+Program: Master of Computer Science  
+Status: Enrolled  
 Expected Start: Fall 2026  
-
-## University of Texas at Dallas
-Program: Master of Science in Computer Science  
-Status: Admitted  
 
 ---
 
@@ -34,12 +30,12 @@ Status: Admitted
 ## University of Texas at Dallas (UTD)
 Location: Richardson, Texas, USA  
 Major: Computer Science  
-Transfer Date: January 2023  
+Study Period: January 2023 – 2025  
 
 Experience:
 At UTD, Yifan gradually rebuilt confidence after earlier academic struggles.  
 Living in Dallas, a city he enjoys, provided a stable and comfortable environment for personal growth.  
-His time at UTD has been generally calm, productive, and steadily improving both academically and personally.
+His time at UTD was generally calm, productive, and steadily improving both academically and personally.
 
 ---
 
@@ -111,8 +107,7 @@ Graduation Year: 2012
 Experience:
 Because Yifan lived relatively far from the school, he did not spend much time socializing with classmates outside class.
 
-However, he developed stronger friendships with peers in sports teams outside school.
-
+However, he developed stronger friendships with peers in sports teams outside school.  
 He also remembers having a positive relationship with several teachers, especially his art teacher, who left a strong impression on him.
 
 ---
@@ -139,7 +134,8 @@ He does not remember many details from this period, but recalls often missing ho
 2019–2020 — University of Nebraska–Lincoln  
 2020–2023 — Houston Community College  
 January 2023 — Transferred to University of Texas at Dallas  
-2026 — Planned graduate studies (UTD or UC Davis)
+2025 — Earned B.S. in Computer Science (UTD)  
+2026 — Began graduate studies at University of Illinois Urbana-Champaign  
 
 ---
 

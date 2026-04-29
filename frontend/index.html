@@ -1,27 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Yifan's Chat</title>
+    <title>Yifan's Chat☀️</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Orbitron:wght@400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/d889c79a49.js" crossorigin="anonymous"></script>
+
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Inter', sans-serif;
             display: flex;
             flex-direction: column;
             height: 100vh;
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
-        /* 左上角标题 */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: -1;
+        }
+
         .header {
-            padding: 15px 25px;
-            font-weight: bold;
-            font-size: 20px;
-            background-color: white;
-            border-bottom: 1px solid #ddd;
+    height: 12.5vh;   /* ✅ 1/8 屏幕高度 */
+    box-sizing: border-box;
+    padding: 0 25px;
+
+    font-weight: bold;
+    font-size: 2.2vh;  /* 字体跟高度联动 */
+
+    background-color: rgba(97, 95, 95, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-bottom: none;
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+        #typingTitle {
+            display: block;
+width: 340px;
+min-width: 340px;
+height: 30px;
+line-height: 30px;
+text-align: right;
+white-space: nowrap;
+overflow: hidden;
+transform: translateX(-100px);
+font-size: 3.5vh;
+color: white;
         }
 
-        /* 聊天区域 */
+        
+.new-chat-btn {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+
+    border-radius: 50%;
+    border: none;
+    background-color: transparent;  
+    color: #a39e9e;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+        
+
+        .new-chat-btn:hover {
+            background-color: #222;
+            transform: rotate(90deg);  
+            transition: 0.2s;
+        }
+
         .chat-container {
             flex: 1;
             overflow-y: auto;
@@ -30,44 +107,132 @@
             flex-direction: column;
         }
 
-        /* 欢迎语居中 */
         .welcome {
             text-align: center;
-            margin-top: 120px;
             font-size: 22px;
-            color: #555;
+            font-weight: 600;
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 100%;
         }
 
-        /* 消息气泡 */
+        .message-row {
+            display: flex;
+            align-items: flex-end;
+            margin: 10px 0;
+        }
+
+        .user-row {
+            flex-direction: row;
+        }
+
+        .bot-row {
+            flex-direction: row-reverse;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            min-height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 10px;
+            background-color: #eee;
+            font-size: 23px;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .message {
             max-width: 60%;
-            padding: 12px 16px;
-            margin: 8px 0;
-            border-radius: 15px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.45;
             word-wrap: break-word;
         }
 
-        .user {
-            align-self: flex-start;
-            background-color: #d1e7ff;
+        .user-msg {
+            background-color: rgba(209, 231, 255, 0.92);
         }
 
-        .bot {
-            align-self: flex-end;
-            background-color: #e2e2e2;
+        .bot-msg {
+            background-color: rgba(226, 226, 226, 0.92);
         }
 
-        /* 输入区域 */
+        .loading {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .loading span {
+            width: 8px;
+            height: 8px;
+            background-color: #666;
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .loading span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .top-left-icon {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: translateY(0);
+                opacity: 0.3;
+            }
+            40% {
+                transform: translateY(-6px);
+                opacity: 1;
+            }
+        }
+
         .input-container {
             display: flex;
-            padding: 15px;
+            align-items: center;
+            gap: 10px;
+
+            width: 70%;
+            margin: 0 auto 15px auto;
+
+            padding: 10px 15px;
             background-color: white;
             border-top: 1px solid #ddd;
+            border-radius: 14px;
         }
 
         input {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
             border-radius: 8px;
             border: 1px solid #ccc;
@@ -75,8 +240,9 @@
 
         button {
             margin-left: 10px;
-            padding: 10px 18px;
+            padding: 12px 20px;
             font-size: 16px;
+            font-weight: bold;
             border-radius: 8px;
             border: none;
             background-color: #4CAF50;
@@ -87,92 +253,256 @@
         button:hover {
             background-color: #45a049;
         }
+
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+            color: #333;
+
+            border-radius: 50%;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.1);
+        }
+
+        .send-icon-btn {
+            margin-left: 0;
+            padding: 0;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+            font-size: 17px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .send-icon-btn:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
+
 <body>
 
-    <div class="header">
-        Yifan's Chat
-    </div>
+<div class="header">
+    <img src="icon.png" class="top-left-icon">
 
-    <div class="chat-container" id="chatContainer">
-        <div class="welcome" id="welcomeMessage"></div>
-    </div>
+    <span id="typingTitle"></span>
 
-    <div class="input-container">
-        <input type="text" id="messageInput" placeholder="Type your message..." />
-        <button onclick="sendMessage()">Send</button>
-    </div>
+    <button class="new-chat-btn icon-btn" onclick="newChat()">
+    <i class="fa-solid fa-rotate-right" style="color: rgb(255, 212, 59);"></i>
+</button>
+</div>
 
-    <script>
-        const welcomeMessages = [
-            "Welcome to Yifan’s Chat — what would you like to explore today?",
-            "Curious about Yifan’s projects, music taste, or game world? Let’s talk.",
-            "Yifan is here to chat about tech, literature, games, and beyond.",
-            "Dive into Yifan’s world — what interests you today?",
-            "Want to know more about Yifan’s journey, ideas, or creations?",
-            "Let’s explore Yifan’s thoughts on code, culture, and creativity.",
-            "Ask anything about Yifan — projects, passions, or perspectives.",
-            "Step into Yifan’s digital space — what shall we discuss?"
-        ];
+<div class="chat-container" id="chatContainer">
+    <div class="welcome" id="welcomeMessage"></div>
+</div>
 
-        // 随机显示欢迎语
-        document.getElementById("welcomeMessage").innerText =
-            welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
+<div class="input-container">
+    <a href="https://www.linkedin.com/in/yifan-r-204242290/" target="_blank" class="icon-btn">
+        <i class="fa-brands fa-linkedin"></i>
+    </a>
 
-        async function sendMessage() {
-            const input = document.getElementById("messageInput");
-            const text = input.value.trim();
-            if (text === "") return;
+    <input type="text" id="messageInput" placeholder="Type your message..." />
 
-            const chatContainer = document.getElementById("chatContainer");
+    <button id="sendBtn" onclick="sendMessage()" class="send-icon-btn">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
 
-            // 如果第一次发送，移除欢迎语
-            const welcome = document.getElementById("welcomeMessage");
-            if (welcome) welcome.remove();
+    <a href="https://github.com/crazycat948" target="_blank" class="icon-btn">
+        <i class="fa-brands fa-github"></i>
+    </a>
+</div>
 
-            // 用户气泡
-            const userMessage = document.createElement("div");
-            userMessage.className = "message user";
-            userMessage.innerText = text;
-            chatContainer.appendChild(userMessage);
+<script>
+    const images = [
+        "img/1.jpg",
+        "img/2.jpg",
+        "img/3.jpg",
+        "img/4.jpg",
+        "img/5.jpg",
+        "img/6.jpg",
+        "img/7.jpg",
+        "img/8.jpg"
+    ];
 
-            input.value = "";
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    document.body.style.backgroundImage = `url('${randomImage}')`;
 
-            try {
-                const response = await fetch("http://127.0.0.1:8000/chat", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ message: text })
-                });
+    let sessionId = sessionStorage.getItem("session_id");
 
-                const data = await response.json();
+    if (!sessionId) {
+        sessionId = crypto.randomUUID();
+        sessionStorage.setItem("session_id", sessionId);
+    }
 
-                const botMessage = document.createElement("div");
-                botMessage.className = "message bot";
-                botMessage.innerText = data.reply;
-                chatContainer.appendChild(botMessage);
+    const welcomeMessages = [
+        "Welcome to Yifan’s Chat — what would you like to explore today?",
+        "Curious about Yifan’s projects, music taste, or game world? Let’s talk.",
+        "Yifan is here to chat about tech, literature, games, and beyond.",
+        "Dive into Yifan’s world — what interests you today?",
+        "Want to know more about Yifan’s journey, ideas, or creations?",
+        "Let’s explore Yifan’s thoughts on code, culture, and creativity.",
+        "Ask anything about Yifan — projects, passions, or perspectives.",
+        "Step into Yifan’s digital space — what shall we discuss?"
+    ];
 
-                chatContainer.scrollTop = chatContainer.scrollHeight;
+    document.getElementById("welcomeMessage").innerText =
+        welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
 
-            } catch (error) {
-                const botMessage = document.createElement("div");
-                botMessage.className = "message bot";
-                botMessage.innerText = "Error connecting to backend.";
-                chatContainer.appendChild(botMessage);
+    const titleElement = document.getElementById("typingTitle");
+
+    const titles = [
+        "Yifan's Chat☀️",
+        "任一凡的咨询室"
+    ];
+
+    let titleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeHeader() {
+        const currentTitle = titles[titleIndex];
+
+        if (!isDeleting) {
+            charIndex++;
+            titleElement.innerText = currentTitle.substring(0, charIndex);
+
+            if (charIndex === currentTitle.length) {
+                isDeleting = true;
+                setTimeout(typeHeader, 1400);
+                return;
+            }
+        } else {
+            charIndex--;
+            titleElement.innerText = currentTitle.substring(0, charIndex);
+
+            if (charIndex === 0) {
+                isDeleting = false;
+                titleIndex = (titleIndex + 1) % titles.length;
+                setTimeout(typeHeader, 400);
+                return;
             }
         }
 
-        // 支持 Enter 发送
-        document.getElementById("messageInput")
-            .addEventListener("keypress", function(event) {
-                if (event.key === "Enter") {
-                    sendMessage();
-                }
+        const speed = isDeleting ? 70 : 120;
+        setTimeout(typeHeader, speed);
+    }
+
+    typeHeader();
+
+    function newChat() {
+        sessionStorage.removeItem("session_id");
+        location.reload();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById("messageInput");
+        const btn = document.getElementById("sendBtn");
+        const text = input.value.trim();
+
+        if (!text) return;
+
+        const chat = document.getElementById("chatContainer");
+
+        const welcome = document.getElementById("welcomeMessage");
+        if (welcome) welcome.remove();
+
+        const userRow = document.createElement("div");
+        userRow.className = "message-row user-row";
+
+        userRow.innerHTML = `
+            <div class="avatar">😊</div>
+            <div class="message user-msg"></div>
+        `;
+
+        userRow.querySelector(".user-msg").innerText = text;
+        chat.appendChild(userRow);
+
+        input.value = "";
+        input.disabled = true;
+        btn.disabled = true;
+
+        const botRow = document.createElement("div");
+        botRow.className = "message-row bot-row";
+
+        botRow.innerHTML = `
+            <div class="avatar">
+                <img src="tiemao.png" alt="AI avatar">
+            </div>
+            <div class="message bot-msg">
+                <div class="loading">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        `;
+
+        chat.appendChild(botRow);
+        chat.scrollTop = chat.scrollHeight;
+
+        const botMessage = botRow.querySelector(".bot-msg");
+
+        try {
+            const res = await fetch("http://127.0.0.1:8000/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: text,
+                    session_id: sessionId
+                })
             });
-    </script>
+
+            const data = await res.json();
+
+            botMessage.innerText =
+                data.reply || data.response || data.answer || "No response received.";
+
+        } catch (err) {
+            botMessage.innerText = "Error connecting to backend.";
+            console.error(err);
+        } finally {
+            input.disabled = false;
+            btn.disabled = false;
+            input.focus();
+            chat.scrollTop = chat.scrollHeight;
+        }
+    }
+
+    document.getElementById("messageInput").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            sendMessage();
+        }
+    });
+</script>
 
 </body>
 </html>
