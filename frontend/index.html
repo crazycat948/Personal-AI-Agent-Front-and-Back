@@ -155,6 +155,11 @@ color: white;
             object-fit: cover;
         }
 
+        @keyframes popIn {
+            from { transform: scale(0.82); opacity: 0; }
+            to   { transform: scale(1);    opacity: 1; }
+        }
+
         .message {
             max-width: 60%;
             padding: 14px 18px;
@@ -163,6 +168,12 @@ color: white;
             font-weight: 600;
             line-height: 1.45;
             word-wrap: break-word;
+            animation: popIn 0.18s ease-out;
+            transform-origin: bottom left;
+        }
+
+        .bot-row .message {
+            transform-origin: bottom right;
         }
 
         .user-msg {
@@ -304,6 +315,41 @@ color: white;
         .send-icon-btn:hover {
             background-color: #45a049;
         }
+
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            width: 70%;
+            margin: 0 auto 10px auto;
+            padding: 0 4px;
+        }
+
+        .suggestion-chip {
+            padding: 7px 14px;
+            border-radius: 999px;
+            background-color: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: white;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.18s ease, transform 0.15s ease;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .suggestion-chip:hover {
+            background-color: rgba(255, 255, 255, 0.32);
+            transform: translateY(-1px);
+        }
+
+        .suggestion-chip:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -322,6 +368,8 @@ color: white;
 <div class="chat-container" id="chatContainer">
     <div class="welcome" id="welcomeMessage"></div>
 </div>
+
+<div class="suggestions" id="suggestions"></div>
 
 <div class="input-container">
     <a href="https://www.linkedin.com/in/yifan-r-204242290/" target="_blank" class="icon-btn">
@@ -385,8 +433,22 @@ color: white;
     let titleIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
+    let animTimer = null;
+    let isAnimating = false;
+
+    titleElement.innerText = titles[0];
+
+    function resetTitle() {
+        isAnimating = false;
+        clearTimeout(animTimer);
+        titleIndex = 0;
+        charIndex = titles[0].length;
+        isDeleting = false;
+        titleElement.innerText = titles[0];
+    }
 
     function typeHeader() {
+        if (!isAnimating) return;
         const currentTitle = titles[titleIndex];
 
         if (!isDeleting) {
@@ -395,7 +457,7 @@ color: white;
 
             if (charIndex === currentTitle.length) {
                 isDeleting = true;
-                setTimeout(typeHeader, 1400);
+                animTimer = setTimeout(typeHeader, 1400);
                 return;
             }
         } else {
@@ -405,16 +467,68 @@ color: white;
             if (charIndex === 0) {
                 isDeleting = false;
                 titleIndex = (titleIndex + 1) % titles.length;
-                setTimeout(typeHeader, 400);
+                animTimer = setTimeout(typeHeader, 400);
                 return;
             }
         }
 
         const speed = isDeleting ? 70 : 120;
-        setTimeout(typeHeader, speed);
+        animTimer = setTimeout(typeHeader, speed);
     }
 
-    typeHeader();
+    titleElement.addEventListener("mouseenter", () => {
+        if (isAnimating) return;
+        isAnimating = true;
+        titleIndex = 0;
+        charIndex = titles[0].length;
+        isDeleting = true;
+        typeHeader();
+    });
+
+    titleElement.addEventListener("mouseleave", resetTitle);
+
+    const allSuggestions = [
+        "What are you currently working on?",
+        "What's your favorite music?",
+        "What games do you play?",
+        "Where did you study?",
+        "What programming languages do you know?",
+        "What are your hobbies?",
+        "What's your personality like?",
+        "What are your career goals?",
+        "Tell me about your projects",
+        "Where are you from?",
+        "Do you play any sports?",
+        "What's your zodiac sign?",
+        "What are you passionate about?",
+        "What's your dream job?",
+        "What kind of music do you like?",
+        "What's your favorite game?",
+        "How did you get into coding?",
+        "What's your background?",
+    ];
+
+    function pickSuggestions() {
+        const shuffled = [...allSuggestions].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, 3);
+    }
+
+    function renderSuggestions() {
+        const container = document.getElementById("suggestions");
+        container.innerHTML = "";
+        pickSuggestions().forEach(text => {
+            const chip = document.createElement("button");
+            chip.className = "suggestion-chip";
+            chip.innerText = text;
+            chip.onclick = () => {
+                document.getElementById("messageInput").value = text;
+                sendMessage();
+            };
+            container.appendChild(chip);
+        });
+    }
+
+    renderSuggestions();
 
     function newChat() {
         sessionStorage.removeItem("session_id");
@@ -432,6 +546,8 @@ color: white;
 
         const welcome = document.getElementById("welcomeMessage");
         if (welcome) welcome.remove();
+
+        document.getElementById("suggestions").style.display = "none";
 
         const userRow = document.createElement("div");
         userRow.className = "message-row user-row";
@@ -483,8 +599,10 @@ color: white;
 
             const data = await res.json();
 
-            botMessage.innerText =
-                data.reply || data.response || data.answer || "No response received.";
+            botMessage.innerText = data.reply || data.response || data.answer || "No response received.";
+            botMessage.style.animation = "none";
+            botMessage.offsetHeight;
+            botMessage.style.animation = "";
 
         } catch (err) {
             botMessage.innerText = "Error connecting to backend.";
@@ -494,6 +612,10 @@ color: white;
             btn.disabled = false;
             input.focus();
             chat.scrollTop = chat.scrollHeight;
+
+            const suggestionsEl = document.getElementById("suggestions");
+            suggestionsEl.style.display = "flex";
+            renderSuggestions();
         }
     }
 

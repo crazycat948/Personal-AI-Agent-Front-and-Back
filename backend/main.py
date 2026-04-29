@@ -125,7 +125,7 @@ def generate_response(query: str, session_id: str):
 
     max_score = chunks[0]["score"]
 
-    if max_score < 0.22:
+    if max_score < 0.3:
         if explicitly_about_yifan(retrieval_query):
             return "I don't have enough information about that yet. 我的资料库里暂时没有足够信息回答这个问题。"
         else:
