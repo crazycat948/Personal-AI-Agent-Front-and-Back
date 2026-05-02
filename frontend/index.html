@@ -54,15 +54,11 @@
 }
 
         #typingTitle {
-            display: block;
-            max-width: 60vw;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            font-size: 3.5vh;
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
             color: white;
+            letter-spacing: 0.3px;
         }
 
         
@@ -478,69 +474,7 @@
     document.getElementById("welcomeMessage").innerText =
         welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
 
-    const titleElement = document.getElementById("typingTitle");
-
-    const titles = [
-        "Yifan's Chat☀️",
-        "任一凡的咨询室"
-    ];
-
-    let titleIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let animTimer = null;
-    let isAnimating = false;
-
-    titleElement.innerText = titles[0];
-
-    function resetTitle() {
-        isAnimating = false;
-        clearTimeout(animTimer);
-        titleIndex = 0;
-        charIndex = titles[0].length;
-        isDeleting = false;
-        titleElement.innerText = titles[0];
-    }
-
-    function typeHeader() {
-        if (!isAnimating) return;
-        const currentTitle = titles[titleIndex];
-
-        if (!isDeleting) {
-            charIndex++;
-            titleElement.innerText = currentTitle.substring(0, charIndex);
-
-            if (charIndex === currentTitle.length) {
-                isDeleting = true;
-                animTimer = setTimeout(typeHeader, 1400);
-                return;
-            }
-        } else {
-            charIndex--;
-            titleElement.innerText = currentTitle.substring(0, charIndex);
-
-            if (charIndex === 0) {
-                isDeleting = false;
-                titleIndex = (titleIndex + 1) % titles.length;
-                animTimer = setTimeout(typeHeader, 400);
-                return;
-            }
-        }
-
-        const speed = isDeleting ? 70 : 120;
-        animTimer = setTimeout(typeHeader, speed);
-    }
-
-    titleElement.addEventListener("mouseenter", () => {
-        if (isAnimating) return;
-        isAnimating = true;
-        titleIndex = 0;
-        charIndex = titles[0].length;
-        isDeleting = true;
-        typeHeader();
-    });
-
-    titleElement.addEventListener("mouseleave", resetTitle);
+    document.getElementById("typingTitle").innerText = "YifanGPT";
 
     const allSuggestions = [
         "What are you currently working on?",
