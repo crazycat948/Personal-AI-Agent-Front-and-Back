@@ -1,4 +1,4 @@
-🚀 Personal AI Agent (RAG-based)
+#🚀 Personal AI Agent (RAG-based)
 
 A full-stack personal AI agent that answers questions about me using a Retrieval-Augmented Generation (RAG) pipeline.
 
@@ -11,7 +11,7 @@ This project implements a single-agent AI system that retrieves relevant informa
 
 Unlike many tutorials, this project is built from scratch without using frameworks like LangChain, to better understand the underlying mechanics of RAG systems.
 
-⚙️ Tech Stack
+#⚙️ Tech Stack
 Backend
 Python
 FastAPI
@@ -43,7 +43,7 @@ Context Injection
 LLM (OpenAI)
         ↓
 Response → Frontend
-🧠 How It Works
+#🧠 How It Works
 1. Knowledge Base
 Stored as text files (about me, projects, etc.)
 Chunked into smaller pieces
@@ -109,7 +109,7 @@ Then commit:
 git add backend/vector_store.json
 git commit -m "update vector store"
 git push
-⚠️ Known Issues
+#⚠️ Known Issues
 The agent may sometimes ignore guardrails after long conversations
 Example: answering unrelated questions like "Who is LeBron James?"
 Attempts made:
@@ -119,4 +119,5 @@ LLM-based classification
 
 Still exploring better solutions for alignment and control.
 
+#author's notes:
 something it says error to connect with endfront just fresh the page and try it again.
