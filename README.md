@@ -118,3 +118,5 @@ Prompt engineering
 LLM-based classification
 
 Still exploring better solutions for alignment and control.
+
+something it says error to connect with endfront just fresh the page and try it again.
